@@ -1,4 +1,5 @@
 const express = require('express')
+const {response} = require("express");
 const app = express()
 
 app.use(express.json())
@@ -37,8 +38,16 @@ app.get('/info', (request, response) => {
 `)
 })
 
-
-
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    console.log(id)
+    const person = persons.find(note => note.id === id)
+    if (person) {
+        response.json(person)
+    } else {
+        response.status(404).end('PERSON NOT FOUND')
+    }
+})
 
 
 const PORT = 3001
