@@ -24,6 +24,11 @@ let persons = [
         "id": 4,
         "name": "Mary Poppendieck",
         "number": "39-23-6423122"
+    },
+    {
+        "id": 5,
+        "name": "John Snow",
+        "number": "39-11-7650933"
     }
 ]
 app.get('/api/persons', (request, response) => {
@@ -47,6 +52,12 @@ app.get('/api/persons/:id', (request, response) => {
     } else {
         response.status(404).end('PERSON NOT FOUND')
     }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(p => p.id !== id)
+    response.status(204).end()
 })
 
 
