@@ -45,7 +45,6 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    console.log(id)
     const person = persons.find(note => note.id === id)
     if (person) {
         response.json(person)
@@ -58,6 +57,31 @@ app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(p => p.id !== id)
     response.status(204).end()
+})
+
+const generateId = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min)
+}
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'name is missing'
+        })
+    }
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'number is missing'
+        })
+    }
+
+    const person = {
+        id: generateId(persons.length + 1, 100),
+        name: body.name,
+        number: body.number
+    }
+    persons = persons.concat(person)
+    response.json(person)
 })
 
 

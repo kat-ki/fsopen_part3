@@ -9,4 +9,14 @@ Accept: application/json
 
 DELETE http://localhost:3001/api/persons/:id
 
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "John Wonik",
+  "number": "1111"
+}
+
 
