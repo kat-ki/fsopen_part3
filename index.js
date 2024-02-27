@@ -8,6 +8,7 @@ const app = express()
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(morgan(':method :url :body'))
+app.use(express.static('dist'))
 
 let persons = [
     {
