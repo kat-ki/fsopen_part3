@@ -28,10 +28,10 @@ const person = new Person({
     number: number,
 })
 
-/*person.save().then(result => {
+person.save().then(result => {
     console.log(`added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
-})*/
+})
 
 Person.find({}).then(result => {
     console.log('Phonebook: ')
