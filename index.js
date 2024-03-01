@@ -27,13 +27,13 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(note => note.id === id)
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end('PERSON NOT FOUND')
-    }
+    Person.findById(request.params.id).then(person => {
+        if (person) {
+            response.json(person)
+        } else {
+            response.status(404).end('PERSON NOT FOUND')
+        }
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -46,7 +46,6 @@ const generateId = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min)
 }
 
-//TODO: fix post found person
 app.post('/api/persons', (request, response) => {
     const body = request.body
     if (body.name === undefined) {
@@ -59,13 +58,13 @@ app.post('/api/persons', (request, response) => {
             error: 'Number is missing'
         })
     }
-
-    const foundPerson = persons.find(person => person.name.toLowerCase() === request.body.name.toLowerCase());
+//TODO: fix post found person
+    /*const foundPerson = response.find(person => person.name.toLowerCase() === request.body.name.toLowerCase());
     if (foundPerson) {
         return response.status(400).json({
             error: 'Name must be unique'
         })
-    }
+    }*/
 
     const person = new Person({
         name: body.name,
