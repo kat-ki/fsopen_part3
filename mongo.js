@@ -9,6 +9,7 @@ const password = process.argv[2]
 const name = process.argv[3]
 const number = process.argv[4]
 
+//const url = process.env.MONGODB_URI
 const url =
     `mongodb+srv://raskat:${password}@cluster0.6kxfqkn.mongodb.net/phonebook?retryWrites=true&w=majority`
 
@@ -29,7 +30,7 @@ const person = new Person({
 })
 
 person.save().then(result => {
-    console.log(`added ${person.name} number ${person.number} to phonebook`)
+    console.log(`added ${person.name} number ${person.number} to the phonebook`)
     mongoose.connection.close()
 })
 
