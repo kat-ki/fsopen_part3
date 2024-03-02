@@ -11,7 +11,13 @@ app.use(morgan('tiny'))
 app.use(morgan(':method :url :body'))
 app.use(express.static('dist'))
 
-
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+    if (error.name === 'CastError') {
+        return response.status(400).send({error: 'malformatted id'})
+    }
+    next(error)
+}
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons)
@@ -36,15 +42,17 @@ app.get('/api/persons/:id', (request, response) => {
     })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(p => p.id !== id)
-    response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndDelete(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
-const generateId = (min, max) => {
+/*const generateId = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min)
-}
+}*/
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
@@ -75,6 +83,7 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
