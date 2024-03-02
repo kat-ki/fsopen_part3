@@ -12,9 +12,8 @@ app.use(morgan(':method :url :body'))
 app.use(express.static('dist'))
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
     if (error.name === 'CastError') {
-        return response.status(400).send({error: 'malformatted id'})
+        return response.status(400).send({error: 'malformatted id'});
     }
     next(error)
 }
