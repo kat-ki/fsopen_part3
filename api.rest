@@ -19,4 +19,12 @@ Content-Type: application/json
   "number": "182-333-9973"
 }
 
+###
+PUT http://localhost:3001/api/persons/:id
+
+{
+  "name": "",
+  "number": ""
+}
+
 
