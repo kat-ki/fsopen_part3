@@ -4,16 +4,16 @@ const morgan = require('morgan')
 morgan.token('body', request => JSON.stringify(request.body))
 const Person = require('./models/person')
 
-const app = express();
+const app = express()
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(morgan(':method :url :body'))
 app.use(express.static('dist'))
 const errorHandler = (error, request, response, next) => {
     if (error.name === 'CastError') {
-        return response.status(400).send({error: 'malformatted id'});
+        return response.status(400).send({error: 'malformatted id'})
     } else if (error.name === 'ValidationError') {
-        return response.status(400).json({error: error.message});
+        return response.status(400).json({error: error.message})
     }
     next(error)
 }
@@ -51,7 +51,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-    const body = request.body;
+    const body = request.body
     if (body.name === undefined) {
         return response.status(400).json({
             error: 'Name is missing'
@@ -62,13 +62,13 @@ app.post('/api/persons', (request, response, next) => {
             error: 'Number is missing'
         })
     }
-//TODO: fix post found person
+    //TODO: fix post found person
     /*const foundPerson = response.find(person => person.name.toLowerCase() === request.body.name.toLowerCase());
-    if (foundPerson) {
-        return response.status(400).json({
-            error: 'Name must be unique'
-        })
-    }*/
+      if (foundPerson) {
+          return response.status(400).json({
+              error: 'Name must be unique'
+          })
+      }*/
 
     const person = new Person({
         name: body.name,
